@@ -1,1 +1,39 @@
+// Given the root of a binary tree, imagine yourself standing on the right side of it,
+//return the values of the nodes you can see ordered from top to bottom.
+//Right View Of Binary Tree
 
+//approach 1: using BFS
+vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        queue<TreeNode*> que;
+        if(root!=NULL){
+             que.push(root);
+         }
+         while(!que.empty()){
+           int size=que.size();
+             TreeNode* node;
+             while(size--){
+                 node=que.front();
+                 que.pop();
+                 if(node->left!=NULL) que.push(node->left);
+                 if(node->right!=NULL) que.push(node->right);
+             }
+             ans.push_back(node->val);
+        }
+        return ans;
+}
+
+//approach 2: using DFS
+void preOrder(TreeNode* root, vector<int>& ans,int level){
+        if(root==NULL) return;
+        if(ans.size()<level){
+            ans.push_back(root->val);
+        }
+        preOrder(root->right,ans,level+1);
+        preOrder(root->left,ans,level+1);
+}
+vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        preOrder(root,ans,1);
+        return ans;
+}
