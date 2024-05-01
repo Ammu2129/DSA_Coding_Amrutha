@@ -1,1 +1,20 @@
+// traversing each level using queue
 
+vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if(root==NULL) return ans;
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()){
+            int size=que.size();
+            vector<int> vt;
+            while(size--){
+                TreeNode* temp=que.front();
+                que.pop();
+                vt.push_back(temp->val);
+                if(temp->left!=NULL) que.push(temp->left);
+                if(temp->right!=NULL) que.push(temp->right);
+            }
+            ans.push_back(vt);
+}
+        
