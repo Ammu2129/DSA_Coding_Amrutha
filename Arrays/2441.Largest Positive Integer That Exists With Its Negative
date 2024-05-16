@@ -1,0 +1,38 @@
+//approach 1:
+//sort the array and use two points from start and end of the array. comapre the values at the two pointers.
+//approach 2: use an unordered_set to store the elements , while traversing the elements we need to find whether the negative value of the curr num 
+is already there in the set or not. if it alraedy there then we will try to get the maximum value.
+
+https://leetcode.com/problems/largest-positive-integer-that-exists-with-its-negative/description/
+
+//approach 1
+int findMaxK(vector<int>& nums) {
+        unordered_set<int> st;
+        int ans=-1;
+        int i=0;
+        while(i<nums.size()){
+            if(st.find(-nums[i])!=st.end()) {
+                ans=max(ans,abs(nums[i]));
+            }
+            st.insert(nums[i]);
+            i++;
+        }
+        return ans;
+}
+//approach 2
+int findMaxK(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        // -7 -1 1 6 7 10
+        int i=0;
+        int j=nums.size()-1;
+        int ans=-1;
+        while(i<j){
+            if(nums[j]+nums[i]==0) {
+                ans=nums[j];
+                break;
+            }
+            else if(abs(nums[i])>nums[j]) i++;
+            else j--;
+        }
+        return ans;
+}
