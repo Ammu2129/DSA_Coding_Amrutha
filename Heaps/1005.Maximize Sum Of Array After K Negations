@@ -1,0 +1,25 @@
+//given an array of numbers, we need to do k operations(in each operation we need to change the value of the element from the array to its negative number). after the k operations the sum of the elements
+in the array should be maximum.
+//approach
+//push all the elements of a array to the min heap.
+// get the top element from the heap, change its sign and push it back to the heap k times.
+// now add all the elements from the heap.
+
+https://leetcode.com/problems/maximize-sum-of-array-after-k-negations/description/
+
+int largestSumAfterKNegations(vector<int>& nums, int k) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        int ans=0;
+        for(int i=0;i<nums.size();i++){
+            pq.push(nums[i]);
+            ans+=nums[i];
+        }
+        while(k--){
+            int val=pq.top();
+            if(val==0) break;
+            ans=ans-val+(-val);
+            pq.pop();
+            pq.push(-val);
+        }
+        return ans;
+}
