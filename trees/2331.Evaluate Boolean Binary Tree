@@ -1,0 +1,14 @@
+//approach: use the inorder traversal.
+
+https://leetcode.com/problems/evaluate-boolean-binary-tree/description/
+
+bool evaluateTree(TreeNode* root) {
+        if(root->left==NULL && root->right==NULL){
+            if(root->val==0) return false;
+            return true;
+        }
+        if(root->val==2){
+            return evaluateTree(root->left) || evaluateTree(root->right);
+        }
+        return evaluateTree(root->left) && evaluateTree(root->right);
+}
