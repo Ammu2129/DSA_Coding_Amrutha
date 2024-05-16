@@ -1,0 +1,32 @@
+//given two arrays find the k number of pairs with smallest sum possible.
+//approach:
+// take a max heap and iterate over the two arrays.
+//if the size of queue is less than k , then we directly push the new sum.
+//if the size of queue is already k then we compare the top sum with the curr sum. if top sum> curr sum then we pop the top sum and push the curr sum. 
+//otherwise any other combination with curr element wonnt be possible because the arrays are sorted. e.g arr1= 1,2,3 arr2=3,4,5 if (1,3) is not possible then obviously (1,4) and (1,5) wont be possible.
+
+vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        priority_queue< pair<int,vector<int>> > pq;
+        vector<vector<int>> ans;
+        for(int i=0;i<nums1.size();i++){
+            for(int j=0;j<nums2.size();j++){
+                int sum=nums1[i]+nums2[j];
+                if(pq.size()<k){
+                    pq.push({sum,{nums1[i],nums2[j]}});
+                }
+                else if(pq.top().first>sum){
+                    pq.pop();
+                    pq.push({sum,{nums1[i],nums2[j]}});
+                }
+                else{
+                    break;
+                }
+                if(pq.size()>k) pq.pop();
+            }
+        }
+        while(!pq.empty()){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+        return ans;
+}
