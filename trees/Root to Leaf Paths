@@ -1,0 +1,21 @@
+https://www.geeksforgeeks.org/problems/root-to-leaf-paths/1
+
+class Solution {
+  public:
+    vector<vector<int>> ans;
+    void findPaths(Node* root,vector<int> vt){
+        if(root==NULL) return;
+        vt.push_back(root->data);
+        if(root->left==NULL && root->right==NULL){
+            ans.push_back(vt);
+            return;
+        }
+        findPaths(root->left,vt);
+        findPaths(root->right,vt);
+    }
+    vector<vector<int>> Paths(Node* root) {
+        vector<int> vt={};
+        findPaths(root,vt);
+        return ans;
+    }
+};
