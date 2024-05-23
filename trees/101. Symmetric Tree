@@ -1,0 +1,76 @@
+// recursive solution:
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root1, TreeNode* root2){
+        if(root1==NULL && root2==NULL) return true;
+        if(root1==NULL || root2==NULL || root1->val!=root2->val) return false;
+        bool flag=isSymmetric(root1->left,root2->right) ;
+        if(!flag) return false;
+        flag=isSymmetric(root1->right,root2->left);
+        if(!flag) return false;
+        return true;
+    }
+    bool isSymmetric(TreeNode* root) {
+        if(root==NULL) return true;
+        return isSymmetric(root->left,root->right);
+    }
+};
+
+//iterative solution using level order traversal
+class Solution {
+public:
+    queue<TreeNode*> que1;
+    queue<TreeNode*> que2;
+    vector<int> levelOrder(queue<TreeNode*>& que){
+        vector<int> vt;
+        int size=que.size();
+        while(size--){
+            TreeNode* node=que.front();
+            que.pop();
+            if(node!=NULL) que.push(node->left);
+            if(node!=NULL) que.push(node->right);
+            if(node!=NULL) vt.push_back(node->val);
+            else vt.push_back(-1000);
+        }
+        return vt;
+    }
+    bool compare(){
+        if(que1.empty() && que2.empty()) return true;
+        if(que1.empty() || que2.empty()) return false;
+        vector<int> vt1=levelOrder(que1);
+        vector<int> vt2=levelOrder(que2);
+    
+        reverse(vt2.begin(),vt2.end());
+        if(vt1!=vt2) return false;
+        return compare();
+    }
+    bool isSymmetric(TreeNode* root) {
+        que1.push(root->left);
+        que2.push(root->right);
+        return compare();
+    }
+};
+
+//iterative solution using stack(DFS)
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root==NULL) return true;
+        stack<TreeNode*> st;
+        st.push(root->right);
+        st.push(root->left);
+        while(!st.empty()){
+            TreeNode* node1=st.top(); //left
+            st.pop();
+            TreeNode* node2=st.top(); //right
+            st.pop();
+            if(node1==NULL && node2==NULL) continue;
+            if(node1==NULL || node2==NULL || node1->val!=node2->val) return false;
+            st.push(node2->left);
+            st.push(node1->right);
+            st.push(node2->right);
+            st.push(node1->left);
+        }
+        return true;
+    }
+};
