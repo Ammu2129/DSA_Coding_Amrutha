@@ -1,0 +1,38 @@
+class Solution {
+public:
+    static bool cmp(vector<int> a,vector<int> b){
+        if(a[0]==b[0]){
+            return a[1]<b[1]; // if row is equal then ascending order of value
+        }
+        return a[0]<b[0]; //otherwise ascending order of the row.
+    }
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        vector<vector<int>> ans;
+        int mini=INT_MAX;
+        int maxi=INT_MIN;
+        unordered_map<int,vector<vector<int>>> mpp;
+                   //col       {row,value}
+        queue<pair<TreeNode*,pair<int,int>>> que;
+        que.push({root,{0,0}}); //root,col,row
+        while(!que.empty()){
+            TreeNode* node=que.front().first;
+            int col=que.front().second.first;
+            int row=que.front().second.second;
+            mini=min(mini,col);
+            maxi=max(maxi,col);
+            que.pop();
+            mpp[col].push_back({row,node->val});
+            if(node->left!=NULL) que.push({node->left,{col-1,row+1}});
+            if(node->right!=NULL) que.push({node->right,{col+1,row+1}});
+        }
+        for(int i=mini;i<=maxi;i++){
+            sort(mpp[i].begin(),mpp[i].end(), cmp);
+            vector<int> vt;
+            for(auto it: mpp[i]){
+                vt.push_back(it[1]);
+            }
+            ans.push_back(vt);
+        }
+        return ans;
+    }
+};
