@@ -1,0 +1,35 @@
+https://www.geeksforgeeks.org/problems/bottom-view-of-binary-tree/1
+
+class Solution {
+  public:
+    int mini;
+    int maxi;
+    unordered_map<int,int> mpp;
+    vector <int> bottomView(Node *root) {
+        mpp={};
+        mini=INT_MAX;
+        maxi=INT_MIN;
+        vector<int> ans;
+        if(root==NULL) return ans;
+        queue<pair<Node*,int>> que;
+        que.push({root,0});
+        while(!que.empty()){
+            int size=que.size();
+            while(size--){
+                Node* temp=que.front().first;
+                int col=que.front().second;
+                que.pop();
+                mini=min(mini,col);
+                maxi=max(maxi,col);
+                mpp[col]=temp->data;
+                
+                if(temp->left!=NULL) que.push({temp->left,col-1});
+                if(temp->right!=NULL) que.push({temp->right,col+1});
+            }
+        }
+        for(int i=mini;i<=maxi;i++){
+            ans.push_back(mpp[i]);
+        }
+        return ans;
+    }
+};
