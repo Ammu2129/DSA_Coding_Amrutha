@@ -1,0 +1,28 @@
+problem link: https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1
+
+class Solution{
+public:
+  int t[1001][1001]; //t[n][w];
+  int solve(int W, int wt[], int val[], int n) 
+  { 
+       // Your code here
+       if(n==0 || W==0) return 0;
+       
+       if(t[n][W]!=-1) return t[n][W];
+       
+       if(wt[n-1]<=W){
+           t[n][W]=max(val[n-1]+solve(W-wt[n-1],wt,val,n-1), solve(W,wt,val,n-1));
+           return t[n][W];
+       }
+       else{
+           t[n][W]=solve(W,wt,val,n-1);
+           return t[n][W];
+       }
+  }
+  int knapSack(int W, int wt[], int val[], int n) 
+  { 
+       // Your code here
+       memset(t,-1,sizeof(t));
+       return solve(W,wt,val,n);
+  }
+};
