@@ -1,0 +1,35 @@
+https://www.geeksforgeeks.org/problems/subset-sum-problem2014/0
+
+Given an array arr[] of size N, check if it can be partitioned into two parts such that the sum of elements in both parts is the same.
+S1+S2=S(sum of array)
+now S1==S2 is the question asked, so S should be even
+
+//bottom-up 
+int equalPartition(int N, int arr[])
+    {
+        // code here
+        int sum=0;
+        for(int i=0;i<N;i++){
+            sum+=arr[i];
+        }
+        if(sum%2!=0) return 0;
+        sum=sum/2;
+        bool t[N+1][sum+1];
+        for(int i=0;i<sum+1;i++){
+            t[0][i]=false;
+        }
+        for(int i=0;i<N+1;i++){
+            t[i][0]=true;
+        }
+        for(int i=1;i<N+1;i++){
+            for(int j=1;j<sum+1;j++){
+                if(arr[i-1]<=j){
+                    t[i][j]=t[i-1][j-arr[i-1]] || t[i-1][j];
+                }
+                else{
+                    t[i][j]=t[i-1][j];
+                }
+            }
+        }
+        return t[N][sum];
+    }
