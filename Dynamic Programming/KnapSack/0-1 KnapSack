@@ -1,5 +1,6 @@
 problem link: https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1
 
+// bottom up
 class Solution{
 public:
   int t[1001][1001]; //t[n][w];
@@ -26,3 +27,23 @@ public:
        return solve(W,wt,val,n);
   }
 };
+
+//top down approach
+int t[1001][1001];
+    int knapsack(int W, vector<int>& wt, vector<int>& val,int n){
+        if(W==0 || n==0) return 0;
+        if(t[n][W]!=-1) return t[n][W];
+        if(wt[n-1]<=W){
+             t[n][W]= max(val[n-1]+knapsack(W-wt[n-1],wt,val,n-1),knapsack(W,wt,val,n-1));
+        }
+        else{
+            t[n][W]=knapsack(W,wt,val,n-1);
+        }
+        return t[n][W];
+}
+int knapSack(int W, vector<int>& wt, vector<int>& val) {
+        // Your code here
+        memset(t,-1,sizeof(t));
+        int n=wt.size();
+        return knapsack(W,wt,val,n);
+}
